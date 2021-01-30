@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>😡😡😡 Juego - Los infiltrados del Covid 😡😡😡 #infiltradoscovid</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+
+
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+
+
+    <meta property="og:image" content="https://vivirenremoto.github.io/infiltrados_covid/static/social.png">
+    <meta property="og:image:secure_url" content="https://vivirenremoto.github.io/infiltrados_covid/static/social.png">
+    <meta property="og:image:alt" content="Juego - Los infiltrados del Covid">
+    <meta property="og:image:type" content="image/png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Juego - Los infiltrados del Covid">
+    <meta name="twitter:image" content="https://vivirenremoto.github.io/infiltrados_covid/static/social.png">
+
+
+</head>
+
+<body>
+
+    <style>
+        * {
+            font-family: 'VT323', monospace;
+            text-transform: uppercase;
+        }
+
+        body {
+            background: black;
+            overflow-x: hidden;
+            color: white;
+            font-size: 30px;
+        }
+
+        h1,
+        h2 {
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 60px;
+        }
+
+        h2 {
+            font-size: 30px;
+        }
+
+        button {
+            border: 5px black solid;
+            color: black;
+            background: white;
+            padding: 5px 30px;
+            display: inline-block;
+            font-size: 30px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+
+        .ok {
+            background: #00ff00;
+            color: black;
+            margin-left: -12px;
+        }
+
+        .ko {
+            background: #ff0000;
+            color: white;
+            margin-left: -12px;
+        }
+
+
+        .flip-horizontal {
+            -moz-transform: scaleX(-1);
+            -webkit-transform: scaleX(-1);
+            -o-transform: scaleX(-1);
+            transform: scaleX(-1);
+            -ms-filter: fliph;
+            /*IE*/
+            filter: fliph;
+            /*IE*/
+        }
+
+
+        .flip-horizontal #check {
+            -moz-transform: scaleX(-1);
+            -webkit-transform: scaleX(-1);
+            -o-transform: scaleX(-1);
+            transform: scaleX(-1);
+            -ms-filter: fliph;
+            /*IE*/
+            filter: fliph;
+            /*IE*/
+        }
+
+        .guy_invert {
+            border: 4px red solid;
+        }
+
+        @media screen and (max-width: 480px) {
+            #result button {
+                display: block;
+                margin-bottom: 15px !important;
+                width: 80%;
+                margin: auto;
+            }
+        }
+    </style>
+
+
+    <div id="intro" style="text-align:center;">
+        <h1 style="color:Red">LOS INFILTRADOS DEL COVID</h1>
+        <h2>MEMORIZA LOS INFILTRADOS</h2>
+        <img src="static/politico.png" width="200" height="200" style="max-width:49%"><img style="max-width:49%"
+            src="static/militar.png" width="200" height="200">
+        <br>
+        <h2>▲ Polítco &nbsp; Militar ▲</h2>
+
+        <br>
+        <button id="btn_start">EMPEZAR</button>
+    </div>
+
+
+
+    <div id="game" style="display:none;position:fixed;width:100%;height:100%;">
+
+
+        <div id="info"
+            style="background:black;text-align:center;z-index:1;position:fixed;padding:5px;top:0;left:0;right:0;font-size:30px;color:yellow;">
+            memoriza los infiltrados</div>
+
+        <div id="time"
+            style="background:black;padding:5px;text-align:center;z-index:1;position:fixed;top:35px;left:0;right:0;font-size:60px;color:white;">1:00
+        </div>
+
+        <div id="floor"
+            style="position:fixed;width:1000px;height:1600px;background:white url('static/map.png');border:5px red solid;background-size:cover;top:50%;left:50%;margin-top:-800px;margin-left:-500px;">
+        </div>
+
+
+        <div id="player"
+            style="z-index:1;width:100px;height:100px;background:url('static/player.gif');background-size:cover;position:fixed;left:50%;top:50%;margin-left:-50px;margin-top:-50px;">
+
+            <div id="check" class="ok" style="display:none;position:absolute;margin-top: -35px;  ">+INFILTRADO</div>
+
+        </div>
+
+        <div id="stats"
+            style="background:black;position:fixed;left:0;bottom:0;right:0;padding:5px;text-align:center;font-size:30px;color:white">
+        </div>
+
+    </div>
+
+
+
+    <div id="result" style="color:white;display:none;position:fixed;left:0;top:0;right:0;bottom:0;">
+        <h1 id="result_title" style="text-align:center;"></h1>
+        <h2 id="result_stats" style="text-align:center;"></h2>
+
+
+        <br><br>
+
+        <button onclick="location.reload();">¿Repetir?</button>
+        <button onclick="share()">Compartir</button>
+
+        <button onclick="window.open('https://www.buymeacoffee.com/vivirenremoto')">Apoyar</button>
+
+    </div>
+
+
+
+    <audio id="bg_music1" loop>
+        <source src="static/heart.mp3" type="audio/mp3">
+    </audio>
+
+
+
+    <script>
+        var screen_height = $(document).height();
+        var screen_width = $(document).width();
+        var screen_height_half = $(document).height() / 2;
+        var screen_width_half = $(document).width() / 2;
+
+        var floor_width = $('#floor').width();
+        var floor_height = $('#floor').height();
+        var player_width = $('#player').width();
+        var player_height = $('#player').height();
+
+        var can_move = true;
+        var timer;
+
+        var new_left = 0;
+        var new_top = 0;
+
+
+        var max_time = 60;
+        var time = max_time;
+        var status = 1;
+
+
+        var people = {
+            'old': 3,
+            'sanitarios': 2,
+            'politicos': 1,
+            'militares': 2,
+        };
+
+        var total_enemies = people.politicos + people.militares;
+        var total_found = 0;
+        var max_lives = 3;
+        var total_lives = max_lives;
+
+
+
+
+        var music1 = document.getElementById('bg_music1');
+        music1.volume = 0.5;
+
+
+
+
+
+
+        $('#btn_start').click(function () {
+            gameStart();
+        });
+
+        function updateStats() {
+            var txt_stats = '';
+
+            txt_stats += total_found + '/' + total_enemies + ' infiltrados';
+            txt_stats += ' - ';
+            //txt_stats += total_lives + '/' + max_lives + ' vidas';
+
+            for (var i = 0; i < total_lives; i++) {
+                txt_stats += '♥';
+            }
+            for (var i = 0; i < (max_lives - total_lives); i++) {
+                txt_stats += '♡';
+            }
+
+
+            $('#stats').html(txt_stats);
+        }
+
+        function share() {
+            window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + '&tw_p=tweetbutton&url=' + document.location.href);
+
+        }
+
+
+        function selectGuy(obj) {
+
+
+            can_move = false;
+
+
+            if (status == 2) {
+
+
+
+
+                $(obj).fadeOut('fast');
+
+                if ('militares|politicos'.indexOf($(obj).data('class')) > -1) {
+                    total_found++;
+
+                    $('#check').show().html('+infiltrado').addClass('ok').removeClass('ko');
+
+
+                } else {
+                    total_lives--;
+
+
+                    $('#check').show().html('- ♥').addClass('ko').removeClass('ok');
+                }
+
+                if ((total_lives == 0) || (total_found == total_enemies)) {
+                    endGame();
+                }
+
+            }
+
+            updateStats();
+
+            setTimeout(function () {
+                can_move = true;
+
+
+                $('#check').hide();
+
+            }, 1000);
+
+
+        }
+
+
+        function gameStart() {
+
+
+            music1.play();
+
+
+
+            $('#intro').hide();
+            $('#game').show();
+
+            updateStats();
+
+
+            timer = setInterval(function () {
+                time--;
+
+                time_format = '0:';
+
+                if (time < 10) time_format += '0';
+                time_format += time;
+
+                $('#time').html(time_format);
+
+
+                if (time <= 0) {
+
+
+                    if (status == 1) {
+                        time = max_time;
+                        status = 2;
+
+                        var guys = ['redd', 'bluee', 'yelloow', 'green'];
+
+                        $('.guy').each(function () {
+
+
+                            var rand_guy = guys[Math.floor(Math.random() * guys.length)];
+
+                            $(this).css('background-image', "url('static/" + rand_guy + ".png')");
+                        });
+
+                        $('#info').html('selecciona los infiltrados').css('color', 'red');
+                    } else {
+
+
+
+
+                        endGame();
+                    }
+
+
+
+
+
+                }
+
+
+            }, 1000);
+
+
+
+            $('#game').on('click', function (e) {
+
+                if (!can_move) return;
+
+
+                can_move = false;
+
+
+
+                var init_left = parseInt($('#floor').css('margin-left'));
+                var init_top = parseInt($('#floor').css('margin-top'));
+
+
+                if (screen_width_half < e.pageX) {
+                    new_left = '+=' + (screen_width_half - e.pageX);
+
+                    $('#player').removeClass('flip-horizontal');
+
+                } else if (screen_width_half > e.pageX) {
+                    new_left = '-=' + (e.pageX - screen_width_half);
+
+
+                    $('#player').addClass('flip-horizontal');
+                }
+
+
+
+                if (screen_height_half < e.pageY) {
+                    new_top = '+=' + (screen_width_half - e.pageY);
+
+                } else if (screen_height_half > e.pageY) {
+                    new_top = '-=' + (e.pageY - screen_height_half);
+                }
+
+
+
+
+                $('#floor').animate({
+                    'left': new_left,
+                    'top': new_top
+                }, 1000, function () {
+                    can_move = true;
+                });
+
+
+            });
+
+            $.each(people, function (i, item) {
+
+                for (var j = 0; j < people[i]; j++) {
+
+
+                    var rand_x = Math.floor(Math.random() * (floor_width - player_width));
+                    var rand_y = Math.floor(Math.random() * (floor_height - player_height));
+
+
+                    var bg_guy;
+                    if (i == 'old') bg_guy = 'oldd.png';
+                    else if (i == 'sanitarios') bg_guy = 'sanitario.png';
+                    else if (i == 'politicos') bg_guy = 'politico.png?2';
+                    else if (i == 'militares') bg_guy = 'militar.png';
+
+
+
+
+                    $('#floor').append('<div class="guy" onclick="selectGuy(this)" data-class="' + i + '" style="background:url(\'static/' + bg_guy + '\');background-size:cover;width:' + player_width + 'px;height:' + player_height + 'px;position:absolute;left:' + rand_x + 'px;top:' + rand_y + 'px;"></div>')
+
+                }
+
+            });
+
+        }
+
+
+        function endGame() {
+
+            clearInterval(timer);
+
+            if (total_enemies == total_found) {
+                $('#result_title').html('enhorabuena').css('color', '#00ff00');
+                $('#result_stats').html('has encontrado los infiltrados');
+            } else {
+
+                $('#result_title').html('game over').css('color', '#ff0000');
+                $('#result_stats').html(total_found + '/' + total_enemies + ' infiltrados');
+            }
+
+            $('#game').hide();
+            $('#result').show();
+        }
+
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>
