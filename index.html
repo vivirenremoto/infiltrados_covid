@@ -165,7 +165,7 @@
 
 
 
-    <div id="result" style="color:white;display:none;position:fixed;left:0;top:0;right:0;bottom:0;">
+    <div id="result" style="text-align:center;color:white;display:none;position:fixed;left:0;top:0;right:0;bottom:0;">
         <h1 id="result_title" style="text-align:center;"></h1>
         <h2 id="result_stats" style="text-align:center;"></h2>
 
@@ -206,6 +206,10 @@
 
 
         var max_time = 60;
+
+
+
+
         var time = max_time;
         var status = 1;
 
@@ -284,7 +288,7 @@
                     total_lives--;
 
 
-                    $('#check').show().html('- ♥').addClass('ko').removeClass('ok');
+                    $('#check').show().html('&nbsp;-♥&nbsp;').addClass('ko').removeClass('ok');
                 }
 
                 if ((total_lives == 0) || (total_found == total_enemies)) {
@@ -438,7 +442,7 @@
 
 
 
-                    $('#floor').append('<div class="guy" onclick="selectGuy(this)" data-class="' + i + '" style="background:url(\'static/' + bg_guy + '\');background-size:cover;width:' + player_width + 'px;height:' + player_height + 'px;position:absolute;left:' + rand_x + 'px;top:' + rand_y + 'px;"></div>')
+                    $('#floor').append('<div class="guy" onclick="selectGuy(this)" data-class="' + i + '" style="cursor:pointer;background:url(\'static/' + bg_guy + '\');background-size:cover;width:' + player_width + 'px;height:' + player_height + 'px;position:absolute;left:' + rand_x + 'px;top:' + rand_y + 'px;"></div>')
 
                 }
 
