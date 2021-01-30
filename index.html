@@ -77,7 +77,7 @@
         .ko {
             background: #ff0000;
             color: white;
-            margin-left: -25px;
+            margin-left: -20px;
         }
 
 
@@ -125,12 +125,13 @@
             style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;text-decoration:none;">by
             @vivirenremoto</a>
         <br><br>
-        <h1 style="color:Red">LOS INFILTRADOS DEL COVID</h1>
-        <h2>ENCUENTRA LOS 3 INFILTRADOS</h2>
+        <h1 style="color:red;font-size: 60px; line-height: 50px; margin-bottom: 15px;">LOS INFILTRADOS DEL COVID</h1>
+        <h2>ENCUENTRA LOS 2 INFILTRADOS</h2>
         <img src="static/politico.png" width="200" height="200" style="max-width:49%"><img style="max-width:49%"
             src="static/militar.png" width="200" height="200">
         <br>
-        <h2>▲ Polítco &nbsp; Militar ▲</h2>
+        <h2>▲ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ▲</h2>
+        <h2>Polítco &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Militar</h2>
 
         <br>
         <button id="btn_start">EMPEZAR</button>
@@ -143,7 +144,7 @@
 
         <div id="info"
             style="background:black;text-align:center;z-index:1;position:fixed;padding:5px;top:0;left:0;right:0;font-size:30px;color:yellow;">
-            memoriza los infiltrados</div>
+            encuentra los infiltrados</div>
 
         <div
             style="padding:5px;text-align:center;z-index:1;position:fixed;top:55px;left:0;right:0;font-size:60px;color:white;">
@@ -151,12 +152,12 @@
         </div>
 
         <div id="floor"
-            style="position:fixed;width:1000px;height:1600px;background:white url('static/map.png');border:5px red solid;background-size:cover;top:50%;left:50%;margin-top:-800px;margin-left:-500px;">
+            style="position:fixed;width:1060px;height:1600px;background:white url('static/map.png');border:5px red solid;background-size:cover;top:50%;left:50%;margin-top:-800px;margin-left:-530px;">
         </div>
 
 
         <div id="player"
-            style="z-index:1;width:100px;height:100px;background:url('static/player.gif');background-size:cover;position:fixed;left:50%;top:50%;margin-left:-50px;margin-top:-50px;">
+            style="z-index:1;width:100px;height:100px;background:url('static/playerr.gif');background-size:cover;position:fixed;left:50%;top:50%;margin-left:-50px;margin-top:-50px;">
 
             <div id="check" class="ok" style="display:none;position:absolute;margin-top: -35px;  ">+INFILTRADO</div>
 
@@ -218,9 +219,9 @@
 
 
         var people = {
-            'old': 4,
-            'sanitarios': 4,
-            'politicos': 2,
+            'old': 5,
+            'sanitarios': 5,
+            'politicos': 1,
             'militares': 1,
         };
 
@@ -252,7 +253,7 @@
             //txt_stats += total_lives + '/' + max_lives + ' vidas';
 
             for (var i = 0; i < total_lives; i++) {
-                txt_stats += '♥';
+                txt_stats += '❤';
             }
             for (var i = 0; i < (max_lives - total_lives); i++) {
                 txt_stats += '♡';
@@ -291,10 +292,11 @@
                     total_lives--;
 
 
-                    $('#check').show().html('&nbsp;-♥&nbsp;').addClass('ko').removeClass('ok');
+                    $('#check').show().html('&nbsp;-❤&nbsp;').addClass('ko').removeClass('ok');
                 }
 
                 if ((total_lives == 0) || (total_found == total_enemies)) {
+                    timeout_timeout = 1000;
                     endGame();
                 }
 
@@ -358,11 +360,12 @@
                             $(this).css('background-image', "url('static/" + rand_guy + ".png')");
                         });
 
-                        $('#info').html('Busca los infiltrados').css('color', 'red');
+                        $('#info').html('selecciona los infiltrados').css('color', 'red');
                     } else {
 
 
 
+                        timeout_timeout = 1;
 
                         endGame();
                     }
@@ -458,17 +461,21 @@
 
             clearInterval(timer);
 
-            if (total_enemies == total_found) {
-                $('#result_title').html('enhorabuena').css('color', '#00ff00');
-                $('#result_stats').html('has encontrado los infiltrados');
-            } else {
+            setTimeout(function () {
 
-                $('#result_title').html('game over').css('color', '#ff0000');
-                $('#result_stats').html(total_found + '/' + total_enemies + ' infiltrados');
-            }
+                if (total_enemies == total_found) {
+                    $('#result_title').html('enhorabuena').css('color', '#00ff00');
+                    $('#result_stats').html('has encontrado los infiltrados');
+                } else {
 
-            $('#game').hide();
-            $('#result').show();
+                    $('#result_title').html('game over').css('color', '#ff0000');
+                    $('#result_stats').html(total_found + '/' + total_enemies + ' infiltrados');
+                }
+
+                $('#game').hide();
+                $('#result').show();
+
+            }, timeout_timeout);
         }
 
 
