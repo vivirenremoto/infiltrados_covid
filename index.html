@@ -121,7 +121,7 @@
 
     <div id="intro" style="text-align:center;">
         <h1 style="color:Red">LOS INFILTRADOS DEL COVID</h1>
-        <h2>MEMORIZA LOS INFILTRADOS</h2>
+        <h2>ENCUENTRA LOS 3 INFILTRADOS</h2>
         <img src="static/politico.png" width="200" height="200" style="max-width:49%"><img style="max-width:49%"
             src="static/militar.png" width="200" height="200">
         <br>
@@ -140,8 +140,9 @@
             style="background:black;text-align:center;z-index:1;position:fixed;padding:5px;top:0;left:0;right:0;font-size:30px;color:yellow;">
             memoriza los infiltrados</div>
 
-        <div id="time"
-            style="background:black;padding:5px;text-align:center;z-index:1;position:fixed;top:35px;left:0;right:0;font-size:60px;color:white;">1:00
+        <div
+            style="padding:5px;text-align:center;z-index:1;position:fixed;top:55px;left:0;right:0;font-size:60px;color:white;">
+            <div id="time" style="background:black;color:white;padding:0 20px;display:inline-block;">1:00</div>
         </div>
 
         <div id="floor"
@@ -210,10 +211,10 @@
 
 
         var people = {
-            'old': 3,
-            'sanitarios': 2,
-            'politicos': 1,
-            'militares': 2,
+            'old': 4,
+            'sanitarios': 4,
+            'politicos': 2,
+            'militares': 1,
         };
 
         var total_enemies = people.politicos + people.militares;
@@ -263,11 +264,11 @@
         function selectGuy(obj) {
 
 
-            can_move = false;
 
 
             if (status == 2) {
 
+                can_move = false;
 
 
 
@@ -290,17 +291,20 @@
                     endGame();
                 }
 
+
+                setTimeout(function () {
+                    can_move = true;
+
+
+                    $('#check').hide();
+
+                }, 1000);
+
             }
 
             updateStats();
 
-            setTimeout(function () {
-                can_move = true;
 
-
-                $('#check').hide();
-
-            }, 1000);
 
 
         }
@@ -395,10 +399,12 @@
 
 
                 if (screen_height_half < e.pageY) {
-                    new_top = '+=' + (screen_width_half - e.pageY);
+                    new_top = '-=' + (e.pageY - screen_height_half);
 
                 } else if (screen_height_half > e.pageY) {
-                    new_top = '-=' + (e.pageY - screen_height_half);
+
+                    new_top = '+=' + (screen_height_half - e.pageY);
+
                 }
 
 
