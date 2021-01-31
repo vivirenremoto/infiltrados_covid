@@ -82,13 +82,12 @@
         .ok {
             background: #00ff00;
             color: black;
-            margin-left: -12px;
+            width: 200px;
         }
 
         .ko {
             background: #ff0000;
             color: white;
-            margin-left: 20px;
         }
 
 
@@ -167,13 +166,17 @@
 
         <div id="floor"
             style="position:fixed;width:1060px;height:1600px;background:white url('static/map.png');border:5px red solid;background-size:cover;top:50%;left:50%;margin-top:-800px;margin-left:-530px;">
+
+            <div id="check" class="ok" style="text-align:center;display:none;position:absolute;margin-top: -35px;  ">
+                +INFILTRADO</div>
+
+
         </div>
 
 
         <div id="player"
             style="z-index:1;width:100px;height:100px;background:url('static/playerr.gif');background-size:cover;position:fixed;left:50%;top:50%;margin-left:-50px;margin-top:-50px;">
 
-            <div id="check" class="ok" style="display:none;position:absolute;margin-top: -35px;  ">+INFILTRADO</div>
 
         </div>
 
@@ -227,6 +230,9 @@
 
         var max_time = 60;
 
+        if (screen_width >= 800) {
+            max_time = 45;
+        }
 
         var time = max_time;
         var status = 1;
@@ -243,7 +249,7 @@
         var total_found = 0;
         var max_lives = 3;
         var total_lives = max_lives;
-
+        var timer_check;
 
 
 
@@ -292,21 +298,27 @@
 
                 can_move = false;
 
+                clearTimeout(timer_check);
+
 
 
                 $(obj).fadeOut('fast');
 
+
+                $('#check').css('top', $(obj).css('top')).css('left', $(obj).css('left'));
+
+
                 if ('militares|politicos'.indexOf($(obj).data('class')) > -1) {
                     total_found++;
 
-                    $('#check').show().html('+infiltrado').addClass('ok').removeClass('ko');
+                    $('#check').html(total_found + '/' + total_enemies + ' infiltrados').addClass('ok').removeClass('ko').show();
 
 
                 } else {
                     total_lives--;
 
 
-                    $('#check').show().html('error').addClass('ko').removeClass('ok');
+                    $('#check').html('error').addClass('ko').removeClass('ok').show();
                 }
 
                 if ((total_lives == 0) || (total_found == total_enemies)) {
@@ -315,7 +327,7 @@
                 }
 
 
-                setTimeout(function () {
+                timer_check = setTimeout(function () {
                     can_move = true;
 
 
@@ -346,8 +358,7 @@
             updateStats();
 
 
-            timer = setInterval(function () {
-                time--;
+            function updateTime() {
 
                 time_format = '0:';
 
@@ -389,6 +400,18 @@
 
 
                 }
+            }
+
+
+
+            updateTime();
+
+            timer = setInterval(function () {
+                time--;
+
+
+                updateTime();
+
 
 
             }, 1000);
