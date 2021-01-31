@@ -167,7 +167,8 @@
         <div id="floor"
             style="position:fixed;width:1060px;height:1600px;background:white url('static/map.png');border:5px red solid;background-size:cover;top:50%;left:50%;margin-top:-800px;margin-left:-530px;">
 
-            <div id="check" class="ok" style="text-align:center;display:none;position:absolute;margin-top: -35px;  ">
+            <div id="check" class="ok"
+                style="z-index:2;text-align:center;display:none;position:absolute;margin-top: -35px;  ">
                 +INFILTRADO</div>
 
 
@@ -269,6 +270,8 @@
             var txt_stats = '';
 
             txt_stats += total_found + '/' + total_enemies + ' infiltrados';
+
+            /*
             txt_stats += ' - ';
             //txt_stats += total_lives + '/' + max_lives + ' vidas';
 
@@ -278,6 +281,7 @@
             for (var i = 0; i < (max_lives - total_lives); i++) {
                 txt_stats += '♡';
             }
+            */
 
 
             $('#stats').html(txt_stats);
@@ -318,7 +322,19 @@
                     total_lives--;
 
 
-                    $('#check').html('error').addClass('ko').removeClass('ok').show();
+                    var txt_stats = '&nbsp;';
+
+                    for (var i = 0; i < total_lives; i++) {
+                        txt_stats += '❤';
+                    }
+                    for (var i = 0; i < (max_lives - total_lives); i++) {
+                        txt_stats += '♡';
+                    }
+
+                    txt_stats += '&nbsp;';
+
+
+                    $('#check').html(txt_stats).addClass('ko').removeClass('ok').show();
                 }
 
                 if ((total_lives == 0) || (total_found == total_enemies)) {
